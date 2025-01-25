@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+  console.log("Script cargado y ejecutándose...");
+  
   // Crear un div ficticio para detectar bloqueos
   var testAd = document.createElement("div");
   testAd.className = "adsbygoogle";
@@ -14,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
   script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
   script.async = true;
   script.onerror = function () {
+    console.log("AdBlock detectado.");
     isAdblockActive = true;
     showAdblockWarning();
   };
@@ -21,12 +24,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Comprobar si el div ficticio está bloqueado
   setTimeout(function () {
+    console.log("Comprobando bloqueador...");
     if (
       isAdblockActive || 
       testAd.offsetParent === null || 
       testAd.offsetHeight === 0 || 
       testAd.offsetWidth === 0
     ) {
+      console.log("Bloqueador detectado.");
       showAdblockWarning();
     }
     testAd.remove();
@@ -34,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Mostrar advertencia de AdBlock
   function showAdblockWarning() {
+    console.log("Mostrando advertencia de AdBlock...");
     var antiAdblockDiv = document.getElementById("anti-adblock");
     antiAdblockDiv.style.display = "block";  // Hacer visible el aviso
     document.body.classList.add("blocked");
@@ -46,10 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
       test.style.top = "-9999px";
       document.body.appendChild(test);
 
+      console.log(test.offsetParent);  // Verificar propiedades
+      console.log(test.offsetHeight);
+      console.log(test.offsetWidth);
+
       if (test.offsetParent !== null && test.offsetHeight > 0 && test.offsetWidth > 0) {
-        clearInterval(interval);
-        document.getElementById("anti-adblock").style.display = "none";
-        location.reload();
+        clearInterval(interval);  // Detener la comprobación
+        location.reload(); // Recargar la página automáticamente
       }
       test.remove();
     }, 1000);
